@@ -393,33 +393,33 @@ const router = createBrowserRouter([
       <div className="bg-orange-50 min-h-screen flex flex-col p-4">
         <div className="max-w-4xl mx-auto mt-16 w-full">
           <div className="text-lg mb-2">Find a...</div>
-          <div className="flex space-x-2 text-lg">
+          <div className="flex text-lg flex-wrap">
             <a
-              className="rounded bg-orange-200 px-3 py-0.5 hover:bg-orange-300"
+              className="rounded bg-orange-200 px-3 py-0.5 hover:bg-orange-300 mr-2 mb-2"
               href="/restaurant"
             >
               Restaurant
             </a>
             <a
-              className="rounded bg-blue-200 px-3 py-0.5 hover:bg-blue-300"
+              className="rounded bg-blue-200 px-3 py-0.5 hover:bg-blue-300 mr-2 mb-2"
               href="/dentist"
             >
               Dentist
             </a>
             <a
-              className="rounded bg-yellow-200 px-3 py-0.5 hover:bg-yellow-300"
+              className="rounded bg-yellow-200 px-3 py-0.5 hover:bg-yellow-300 mr-2 mb-2"
               href="/bar"
             >
               Bar
             </a>
             <a
-              className="rounded bg-red-200 px-3 py-0.5 hover:bg-red-300"
+              className="rounded bg-red-200 px-3 py-0.5 hover:bg-red-300 mr-2 mb-2"
               href="/salon"
             >
               Beauty Salon
             </a>
             <a
-              className="rounded bg-green-200 px-3 py-0.5 hover:bg-green-300"
+              className="rounded bg-green-200 px-3 py-0.5 hover:bg-green-300 mr-2 mb-2"
               href="/doctor"
             >
               Doctor
