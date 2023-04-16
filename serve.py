@@ -294,7 +294,10 @@ def all_strings_present(list_of_strings, target_string):
     return True
 
 def full_cache(prompt: str):
-    cache_items = [['dentist', 'friendly front office'], ['bar', 'fruity drinks', 'fun vibes']]
+    cache_items = [['dentist', 'friendly front office'],
+                   ['bar', 'fruity drinks', 'fun vibes'],
+                   ['restaurant', 'mediterranean food', 'classy ambiance']
+                   ]
     for item in cache_items:
         if all_strings_present(item, prompt):
             fn = '_'.join(['_'.join(s.split(' ')) for s in item])
