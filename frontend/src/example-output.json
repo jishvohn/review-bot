@@ -1,0 +1,352 @@
+[
+  {
+    "business_name": "Akiko's Restaurant",
+    "c1_name": "Deliciousness",
+    "c1_score": "4.5",
+    "c1_evidence": "\"soooooooooooooooooooo gooddddddddddddd!!! i love thsi place so much, amazing food i definitely recommend!!!!\"; \"All the sashimi was really good but the wagyu dumpling was absolutely delicious - so savory and delicious. The tuna with caviar on top of this toast was also so bomb and never had anything like it before - very unique.\"; \"Many of the otsumami were a delight- unexpected flavors, a variety of textures, a more modern approach to sushi in general. The milk toast was to die for and we absolutely loved the wagyu dumpling.\"; \"The fried fish was flavorful, crispy, and the meat was sweet. The tuna and caviar over the toasted bread was so buttery, savory, and crispy!\"; \"Fish was immaculate and omg the best green tea ice cream ever! Packed with green tea flavor and super creamy!\"",
+    "c2_name": "Service",
+    "c2_score": "4.0",
+    "c2_evidence": "\"Service was great and we definitely get enough food.\"; \"We also really appreciated the excellent service. SF fine dining has a habit of being too slow, too fast, or too in-your-face, but the service here was perfect. Water glasses/sake always full, dishes always perfectly timed and at the right temp, and servers were informative and attentive.\"; \"Knocking one star off only because they overcharged me for one supplement I ordered 3 of and they counted as 4, and also if you're seated at the corner it can be a little difficult getting the chef's attention, but in spite of these couple of hiccups I still love this place and will definitely be back.\"",
+    "primary_photo": "https://s3-media0.fl.yelpcdn.com/bphoto/fuH2ZeMzBxNEcipEmUSZ-Q/l.jpg",
+    "review_count": 1987,
+    "categories": ["Restaurants", "Sushi Bars"],
+    "operation_hours": [
+      {
+        "day": "Mon",
+        "regularIsClosed": true,
+        "regularHours": null,
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Tue",
+        "regularIsClosed": false,
+        "regularHours": ["11:30 AM - 1:30 PM", "5:30 PM - 8:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Wed",
+        "regularIsClosed": false,
+        "regularHours": ["11:30 AM - 1:30 PM", "5:30 PM - 8:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Thu",
+        "regularIsClosed": false,
+        "regularHours": ["11:30 AM - 1:30 PM", "5:30 PM - 8:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Fri",
+        "regularIsClosed": false,
+        "regularHours": ["11:30 AM - 1:30 PM", "5:30 PM - 8:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Sat",
+        "regularIsClosed": false,
+        "regularHours": ["5:30 PM - 8:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Sun",
+        "regularIsClosed": true,
+        "regularHours": null,
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      }
+    ]
+  },
+  {
+    "business_name": "Akira Japanese Restaurant",
+    "c1_name": "Deliciousness",
+    "c1_score": "4.5",
+    "c1_evidence": "\"They offer $120 Omakase for both lunch and dinner, got to taste the best of small fishes, raw and cooked fish, nigiri, and dessert! $120 for SF is such a good deal. I especially liked the uni spoon, nigiri, and sashimi! The fish was so fresh and well cut.\"",
+    "c2_name": "Service",
+    "c2_score": "3.5",
+    "c2_evidence": "\"The server not smiling nor thanked me. The chef thanks me when I leave the restaurant. The food is small servings the bento box so expensive the tea is not on the house $3 for a small cup.\"",
+    "primary_photo": "https://s3-media0.fl.yelpcdn.com/bphoto/EMMZ1SjBO9ADSXKGEPdsGg/l.jpg",
+    "review_count": 484,
+    "categories": ["Restaurants", "Japanese"],
+    "operation_hours": [
+      {
+        "day": "Mon",
+        "regularIsClosed": false,
+        "regularHours": ["12:00 PM - 3:00 PM", "5:00 PM - 10:00 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Tue",
+        "regularIsClosed": true,
+        "regularHours": null,
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Wed",
+        "regularIsClosed": false,
+        "regularHours": ["12:00 PM - 3:00 PM", "5:00 PM - 10:00 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Thu",
+        "regularIsClosed": false,
+        "regularHours": ["12:00 PM - 3:00 PM", "5:00 PM - 10:00 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Fri",
+        "regularIsClosed": false,
+        "regularHours": ["12:00 PM - 3:00 PM", "5:00 PM - 10:00 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Sat",
+        "regularIsClosed": false,
+        "regularHours": ["12:00 PM - 3:00 PM", "5:00 PM - 10:00 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Sun",
+        "regularIsClosed": false,
+        "regularHours": ["12:00 PM - 3:00 PM", "5:00 PM - 10:00 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      }
+    ]
+  },
+  {
+    "business_name": "Hakashi Japanese Sushi Bar & Grill",
+    "c1_name": "Deliciousness",
+    "c1_score": "4.5",
+    "c1_evidence": "\"The food is always good\" \"Our Omakase was $160 and we had about 17 pieces of yummy nigiris plus 6-8 appetizers\" \"Had the omakase and they offer an incredible selection of more exotic Japanese sushi fish than you will typically find\" \"The sushi is exceptional quality\"",
+    "c2_name": "Service",
+    "c2_score": "4",
+    "c2_evidence": "\"The place is lively and the chefs interact with you all night\" \"They will price your customized omakase accordingly\" \"The staff didn't seem particularly friendly either\" \"They treat everyone like a regular as they provide top notch service\"",
+    "primary_photo": "https://s3-media0.fl.yelpcdn.com/bphoto/72WQKf-B1McXfPhlDDGvig/l.jpg",
+    "review_count": 474,
+    "categories": ["Restaurants", "Sushi Bars"],
+    "operation_hours": [
+      {
+        "day": "Mon",
+        "regularIsClosed": true,
+        "regularHours": null,
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Tue",
+        "regularIsClosed": false,
+        "regularHours": ["11:30 AM - 2:30 PM", "5:00 PM - 10:00 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Wed",
+        "regularIsClosed": false,
+        "regularHours": ["11:30 AM - 2:30 PM", "5:00 PM - 10:00 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Thu",
+        "regularIsClosed": false,
+        "regularHours": ["11:00 AM - 2:30 PM", "5:00 PM - 10:00 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Fri",
+        "regularIsClosed": false,
+        "regularHours": ["11:30 AM - 2:30 PM", "5:00 PM - 11:00 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Sat",
+        "regularIsClosed": false,
+        "regularHours": ["11:30 AM - 2:30 PM", "5:00 PM - 10:00 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Sun",
+        "regularIsClosed": true,
+        "regularHours": null,
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      }
+    ]
+  },
+  {
+    "business_name": "Ike's Japanese Kitchen",
+    "c1_name": "Deliciousness",
+    "c1_score": "4.5",
+    "c1_evidence": "\"The sashimi was good quality and cut in thick slices. Definitely worth the $16 for 6pcs.\" \"The hand roll was delicious, it was their daily special and a pretty good deal at $5.50.\"",
+    "c2_name": "Service",
+    "c2_score": "5",
+    "c2_evidence": "\"Came here for dinner with my friends, I called ahead to reserve for 8 of us and they were super accommodating!! The lady working there/answering my call was literally the sweetest.\" \"Definitely will be coming back here!! Great sushi, great vibes, and the best service.\"",
+    "primary_photo": "https://s3-media0.fl.yelpcdn.com/bphoto/wbjaR0cXn4eNmNp3optGag/l.jpg",
+    "review_count": 211,
+    "categories": ["Restaurants", "Japanese"],
+    "operation_hours": [
+      {
+        "day": "Mon",
+        "regularIsClosed": false,
+        "regularHours": ["11:00 AM - 2:30 PM", "5:00 PM - 9:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Tue",
+        "regularIsClosed": false,
+        "regularHours": ["11:00 AM - 2:30 PM", "5:00 PM - 9:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Wed",
+        "regularIsClosed": false,
+        "regularHours": ["11:00 AM - 2:30 PM", "5:00 PM - 9:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Thu",
+        "regularIsClosed": false,
+        "regularHours": ["11:00 AM - 2:30 PM", "5:00 PM - 9:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Fri",
+        "regularIsClosed": false,
+        "regularHours": ["11:00 AM - 2:30 PM", "5:00 PM - 10:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Sat",
+        "regularIsClosed": false,
+        "regularHours": ["5:00 PM - 10:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Sun",
+        "regularIsClosed": true,
+        "regularHours": null,
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      }
+    ]
+  },
+  {
+    "business_name": "An Japanese Restaurant",
+    "c1_name": "Deliciousness",
+    "c1_score": "4.5",
+    "c1_evidence": "\"All of the food was delicious and varied in the flavors and senses. I'm not a huge fan of most nigiri but this was exquisite. The fatty flavor and textures were unlike any other sushi shops I've ever been to. Even a basic bowl of miso soup gave me a deeper, heartier taste.\"",
+    "c2_name": "Service",
+    "c2_score": "4.5",
+    "c2_evidence": "\"The server tells you exactly how to eat the sushi. ... The space is very intimate, only 3 tables and a bar. So they do reservation only. It's not the best place for a big group. This is a great place for a business meal or a nice date. I would come back for sure.\"",
+    "primary_photo": "https://s3-media0.fl.yelpcdn.com/bphoto/dMhZf2qR4HmITplATfgi8w/l.jpg",
+    "review_count": 180,
+    "categories": ["Restaurants", "Sushi Bars"],
+    "operation_hours": [
+      {
+        "day": "Mon",
+        "regularIsClosed": true,
+        "regularHours": null,
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Tue",
+        "regularIsClosed": false,
+        "regularHours": ["5:30 PM - 9:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Wed",
+        "regularIsClosed": false,
+        "regularHours": ["5:30 PM - 9:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Thu",
+        "regularIsClosed": false,
+        "regularHours": ["5:30 PM - 9:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Fri",
+        "regularIsClosed": false,
+        "regularHours": ["5:30 PM - 9:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Sat",
+        "regularIsClosed": false,
+        "regularHours": ["5:30 PM - 9:30 PM"],
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      },
+      {
+        "day": "Sun",
+        "regularIsClosed": true,
+        "regularHours": null,
+        "hasSpecialHours": false,
+        "specialIsClosed": null,
+        "specialHours": null
+      }
+    ]
+  }
+]

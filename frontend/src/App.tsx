@@ -5,6 +5,7 @@ import {
   useParams,
 } from "react-router-dom";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import exampleOutput from "./example-output.json";
 
 const CATEGORY_MAP = {
   restaurant: {
@@ -33,7 +34,7 @@ const CATEGORY_MAP = {
 
 function Page() {
   const { category } = useParams<{ category: string }>();
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(exampleOutput);
   const [loading, setLoading] = useState(false);
 
   const [prompt, setPrompt] = useState("");
@@ -42,7 +43,7 @@ function Page() {
     console.log("wtf");
     setLoading(true);
     const response = await fetch(
-      `http://localhost:5002/recommendations/${prompt}`
+      `http://localhost:5002/recommendations/${category} that ${prompt}`
     );
     setLoading(false);
     const data = await response.json();
@@ -90,7 +91,49 @@ function Page() {
         {loading && <div className="text-slate-400">Loading...</div>}
         <div className="mt-4">
           {results.map((result: any) => {
-            return <div>{JSON.stringify(result)}</div>;
+            return (
+              <div className="flex space-x-4">
+                <img
+                  className="w-40 h-40 rounded shrink-0"
+                  src={result.primary_photo}
+                ></img>
+                <div className="flex flex-col">
+                  <h2 className="font-semibold text-xl">
+                    {result.business_name}
+                  </h2>
+                  <div>{result.review_count}</div>
+                  <div className="flex space-x-2">
+                    {result.categories.map((category: string) => {
+                      return (
+                        <span className="bg-black/5 px-2 rounded">
+                          {category}
+                        </span>
+                      );
+                    })}
+                  </div>
+                  <div>{result.c1_name}</div>
+                  <div className="h-3 w-64 bg-black/5 rounded">
+                    <div
+                      className="h-3 bg-green-500 rounded"
+                      style={{
+                        width: `${(parseFloat(result.c1_score) / 5) * 100}%`,
+                      }}
+                    ></div>
+                  </div>
+                  <div>{result.c1_evidence}</div>
+                  <div>{result.c2_name}</div>
+                  <div className="h-3 w-64 bg-gray-200 rounded">
+                    <div
+                      className="h-3 bg-blue-500 rounded"
+                      style={{
+                        width: `${(parseFloat(result.c2_score) / 5) * 100}%`,
+                      }}
+                    ></div>
+                  </div>
+                  <div>{result.c2_evidence}</div>
+                </div>
+              </div>
+            );
           })}
         </div>
       </div>
