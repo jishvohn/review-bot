@@ -84,7 +84,7 @@ function getRestaurantStatus(
 const CATEGORY_MAP = {
   restaurant: {
     name: "Restaurant",
-    placeholder: "is Japanese, has fresh sushi, and has outdoor seating",
+    placeholder: "Japanese food, fresh sushi, outdoor seating",
     bgColor: "bg-orange-50",
     tagColor: "bg-orange-200",
     tagColorHover: "hover:bg-orange-300",
@@ -93,7 +93,7 @@ const CATEGORY_MAP = {
   },
   dentist: {
     name: "Dentist",
-    placeholder: "is knowledgable, honest, and genuinely caring",
+    placeholder: "honesty, knowledge, empathy",
     bgColor: "bg-blue-50",
     tagColor: "bg-blue-200",
     tagColorHover: "hover:bg-blue-300",
@@ -102,7 +102,7 @@ const CATEGORY_MAP = {
   },
   bar: {
     name: "Bar",
-    placeholder: "has outdoor seating, has good reviews, and is open late",
+    placeholder: "outdoor seating, high energy, open late",
     bgColor: "bg-yellow-50",
     tagColor: "bg-yellow-200",
     tagColorHover: "hover:bg-yellow-300",
@@ -111,7 +111,7 @@ const CATEGORY_MAP = {
   },
   salon: {
     name: "Beauty Salon",
-    placeholder: "is affable and can dye hair",
+    placeholder: "hair dye, can give good fade",
     bgColor: "bg-red-50",
     tagColor: "bg-red-200",
     tagColorHover: "hover:bg-red-300",
@@ -120,8 +120,7 @@ const CATEGORY_MAP = {
   },
   doctor: {
     name: "Doctor",
-    placeholder:
-      "is brilliant, has good bedside manner, and is a good listener",
+    placeholder: "intelligence, good bedside manner, good listener",
     bgColor: "bg-green-50",
     tagColor: "bg-green-200",
     tagColorHover: "hover:bg-green-300",
