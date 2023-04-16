@@ -145,6 +145,7 @@ function Page() {
   async function getRecommendations() {
     console.log("wtf");
     setLoading(true);
+    setError("");
     try {
       const response = await fetch(
         `${host}/recommendations/${category} with ${prompt}!!`
