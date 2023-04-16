@@ -7,17 +7,7 @@ import {
 import { PaperAirplaneIcon, StarIcon } from "@heroicons/react/24/solid";
 import exampleOutput from "./example-output.json";
 
-type TimeRange = {
-  open: Date;
-  close: Date;
-};
-
-type RestaurantStatus = {
-  isOpen: boolean;
-  nextEvent: Date;
-};
-
-function stringifyDate(date: Date) {
+function stringifyDate(date) {
   const hours24 = date.getHours();
   const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
   const minutes = date.getMinutes();
@@ -26,59 +16,68 @@ function stringifyDate(date: Date) {
   const hoursStr = hours12.toString();
   const minutesStr = minutes.toString().padStart(2, "0");
 
-  return `${hoursStr}:${minutesStr} ${amPm}`;
+  return `${date.getDay()} ${hoursStr}:${minutesStr} ${amPm}`;
 }
 
-function parseTime(timeStr: string): Date {
-  const now = new Date();
-  const [hours, minutes] = timeStr.split(/[:\s]/).filter(Boolean);
-  const amPm = timeStr.match(/AM|PM/i)?.[0] ?? "AM";
+type TimeRange = {
+  day: string;
+  regularHours: string[] | null;
+};
 
-  const hours24 =
-    amPm.toUpperCase() === "PM" ? parseInt(hours) + 12 : parseInt(hours);
-  const minutesInt = parseInt(minutes);
+function getRestaurantStatus(
+  currentTime: Date,
+  schedule: TimeRange[]
+): {
+  isOpen: boolean;
+  nextChange: Date;
+} {
+  function parseTime(timeStr: string): Date {
+    const time = new Date(currentTime);
+    const [hoursStr, minutesStr, amPm] = timeStr.split(/[:\s]+/);
+    let hours = parseInt(hoursStr);
+    const minutes = parseInt(minutesStr);
 
-  const result = new Date(now);
-  result.setHours(hours24, minutesInt, 0, 0);
-  return result;
-}
+    if (amPm === "PM" && hours !== 12) {
+      hours += 12;
+    } else if (amPm === "AM" && hours === 12) {
+      hours = 0;
+    }
 
-function parseTimeRanges(timeRangesStr: string[]): TimeRange[] {
-  return timeRangesStr.map((rangeStr) => {
-    const [openStr, , closeStr] = rangeStr.split(/[-\s]/).filter(Boolean);
-    return {
-      open: parseTime(openStr),
-      close: parseTime(closeStr),
-    };
-  });
-}
+    time.setHours(hours, minutes, 0, 0);
+    return time;
+  }
 
-function restaurantStatus(
-  timeRangesStr: string[],
-  currentTime: Date
-): RestaurantStatus {
-  const timeRanges = parseTimeRanges(timeRangesStr);
+  const currentDayIndex = currentTime.getDay();
+  let isOpen = false;
+  let nextChange: Date | null = null;
 
-  for (const range of timeRanges) {
-    if (currentTime >= range.open && currentTime < range.close) {
-      return {
-        isOpen: true,
-        nextEvent: range.close,
-      };
+  for (let i = 0; i < 14; i++) {
+    const scheduleIndex = (currentDayIndex + i) % 7;
+    const hours = schedule[scheduleIndex].regularHours;
+
+    if (hours) {
+      for (const range of hours) {
+        const [startStr, endStr] = range.split(" - ");
+        const start = parseTime(startStr);
+        const end = parseTime(endStr);
+
+        if (i === 0 && start <= currentTime && currentTime <= end) {
+          isOpen = true;
+          nextChange = end;
+          break;
+        } else if (i > 0 && !nextChange) {
+          nextChange = start;
+          break;
+        }
+      }
+    }
+
+    if (nextChange) {
+      break;
     }
   }
 
-  const nextOpen = timeRanges
-    .map((range) => range.open)
-    .sort((a, b) => a.getTime() - b.getTime())
-    .find((openTime) => openTime > currentTime);
-
-  console.log("nextopen", nextOpen);
-
-  return {
-    isOpen: false,
-    nextEvent: nextOpen || timeRanges[0].open,
-  };
+  return { isOpen, nextChange: nextChange as Date };
 }
 
 const CATEGORY_MAP = {
@@ -165,18 +164,10 @@ function Page() {
         {loading && <div className="text-slate-400">Loading...</div>}
         <div className="mt-4">
           {results.map((result: any) => {
-            const dayOfWeekIndex = (new Date().getDay() + 6) % 7;
-            const hoursToday =
-              result.operation_hours[dayOfWeekIndex].regularHours;
-            let status: RestaurantStatus;
-            if (hoursToday == null) {
-              status = {
-                isOpen: false,
-                nextEvent: new Date(),
-              };
-            } else {
-              status = restaurantStatus(hoursToday, new Date());
-            }
+            const restaurantStatus = getRestaurantStatus(
+              new Date(),
+              result.operation_hours
+            );
 
             const wholeStars = Math.floor(result.aggregated_rating);
             const fraction = result.aggregated_rating % 1;
@@ -231,9 +222,13 @@ function Page() {
                     })}
                   </div>
                   <div className="mb-4 text-sm text-gray-500">
-                    {status.isOpen
-                      ? `Open until ${stringifyDate(status.nextEvent)}`
-                      : `Closed until ${stringifyDate(status.nextEvent)}`}
+                    {restaurantStatus.isOpen
+                      ? `Open until ${stringifyDate(
+                          restaurantStatus.nextChange
+                        )}`
+                      : `Closed until ${stringifyDate(
+                          restaurantStatus.nextChange
+                        )}`}
                   </div>
                   <div className="mb-1">{result.c1_name}</div>
                   <div className="h-3 w-64 bg-black/5 rounded mb-2">
