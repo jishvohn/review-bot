@@ -27,12 +27,12 @@ print(os.getenv("OPENAI_API_KEY"))
 # If the user query above contains these characteristics on which to rank or evaluate this type of businesses,
 # then you absolutely must use these characteristics and nothing else.
 
-# Prompt Template
-template = """
+# Prompt Templates
+
+characteristics_template = """
 User query: {user_query}
 
-I'm going to give you a set of reviews for a business. 
-Based on the user query, I want you to determine what industry the business belongs in. 
+The user query above is from a user who wants to find businesses that best match their query. 
 
 Pretend you are the person who wrote the user query above and wants to evaluate businesses
 based on that query. Generate two characteristics or evaluation measures from this user query. You will use
@@ -48,6 +48,22 @@ Haircuts/Barbers/Salons: Customer satisfaction & quality of care
 
 If the default values above don't match the business from the user query, then use your best judgment
 to come up with two important characteristics by which this type of business should be evaluated. 
+
+Remember, you must output in the following format:
+
+Characteristic 1: 
+Characteristic 2: 
+"""
+
+template = """
+User query: {user_query}
+Characteristic 1: {c1}
+Characteristic 2: {c2}
+
+The user query above is from a customer who wants to find businesses that best match their query. 
+Pretend you are the customer who wrote the user query above and wants to evaluate businesses
+based on that query. I'm going to give you a set of reviews for a business. You need to evaluate this business
+on the two characteristics above by examining these reviews (from other customers). 
 
 The main way you will evaluate the business on the above characteristics is by examining 
 its reviews. For each characteristic, you will use the reviews to provide a decimal score out of 5 
@@ -94,6 +110,31 @@ Evidence for characteristic 2, i.e relevant text snippets from reviews separated
 async def get_recommendations(prompt):
     # Do it
     user_query = prompt
+
+    ct = PromptTemplate(
+        input_variables=["user_query"],
+        template=characteristics_template,
+    )
+
+    prompt = ct.format(user_query=user_query)
+    params = {
+            "engine": "text-davinci-003",
+            "prompt": prompt,
+            "max_tokens": 100,
+            "temperature": 0.1,
+    }
+
+    response = openai.Completion.create(**params)
+    raw_answer = response.choices[0].text
+    semi_answer = []
+    for a in raw_answer.split('\n'):
+        if a != '':
+            semi_answer.append(a)
+
+    print(semi_answer)
+    c1 = ''.join(semi_answer[0].split(':')[1:]).strip()
+    c2 = ''.join(semi_answer[1].split(':')[1:]).strip()
+
     s = time.time()
     print("Received prompt", prompt)
     data = cache(prompt)
@@ -112,7 +153,7 @@ async def get_recommendations(prompt):
         )
 
     prompt_template = PromptTemplate(
-        input_variables=["user_query", "n", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"],
+        input_variables=["user_query", "c1", "c2", "n", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"],
         template=template,
     )
 
@@ -126,6 +167,8 @@ async def get_recommendations(prompt):
 
         prompt = prompt_template.format(
             user_query=user_query,
+            c1=c1,
+            c2=c2,
             n=n,
             r1=reviews[0],
             r2=reviews[1],
@@ -157,13 +200,19 @@ async def get_recommendations(prompt):
         final_response = {}
         for j, raw_val in enumerate(semi_answer):
             if j < len(keys):
-                final_response[keys[j]] = "".join(raw_val.split(":")[1:]).strip()
+                almost_val = ''.join(raw_val.split(':')[1:]).strip()
+                if "evidence" in keys[j]:
+                    final_response[keys[j]] = almost_val.split(';')
+                else:
+                    final_response[keys[j]] = almost_val
         final_response["primary_photo"] = item["primaryPhoto"]
         final_response["review_count"] = item["reviewCount"]
         final_response["categories"] = item["categories"]
         final_response["operation_hours"] = item["operationHours"]
         final_response["aggregated_rating"] = item["aggregatedRating"]
         final_responses.append(final_response)
+
+        print(final_responses)
 
     return quart.Response(json.dumps(final_responses))
 
