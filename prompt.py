@@ -106,7 +106,13 @@ for item in dataset_items:
 
     # Send the request to the API and get back the response
     response = openai.Completion.create(**params)
-    print(response.choices[0].text)
-    print(response)
+    raw_answer = response.choices[0].text
+    a = raw_answer.split('\n')[1:]
+    keys = ["business_name", "c1_name", "c1_score", "c1_evidence", "c2_name", "c2_score", "c2_evidence"]
+    final_response = {}
+    for j, raw_val in enumerate(a):
+        final_response[keys[j]] = ''.join(raw_val.split(':')[1:]).strip()
+    print(final_response)
     pdb.set_trace()
+    print(raw_answer)
     print(5)

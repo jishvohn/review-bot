@@ -119,7 +119,13 @@ async def get_recommendations(prompt):
         s = time.time()
         response = openai.Completion.create(**params)
         print(f"Time elapsed for openai call: {time.time() - s} seconds")
-        final_responses.append(response.choices[0].text)
+        raw_answer = response.choices[0].text
+        a = raw_answer.split('\n')[1:]
+        keys = ["business_name", "c1_name", "c1_score", "c1_evidence", "c2_name", "c2_score", "c2_evidence"]
+        final_response = {}
+        for j, raw_val in enumerate(a):
+            final_response[keys[j]] = ''.join(raw_val.split(':')[1:]).strip()
+        final_responses.append(final_response)
 
     return quart.Response(json.dumps(final_responses))
 
