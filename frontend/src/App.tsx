@@ -33,7 +33,6 @@ function parseTime(timeStr: string): Date {
   const now = new Date();
   const [hours, minutes] = timeStr.split(/[:\s]/).filter(Boolean);
   const amPm = timeStr.match(/AM|PM/i)?.[0] ?? "AM";
-  console.log("parsed", timeStr);
 
   const hours24 =
     amPm.toUpperCase() === "PM" ? parseInt(hours) + 12 : parseInt(hours);
@@ -73,6 +72,8 @@ function restaurantStatus(
     .map((range) => range.open)
     .sort((a, b) => a.getTime() - b.getTime())
     .find((openTime) => openTime > currentTime);
+
+  console.log("nextopen", nextOpen);
 
   return {
     isOpen: false,
@@ -181,7 +182,7 @@ function Page() {
             const fraction = result.aggregated_rating % 1;
 
             return (
-              <div className="flex space-x-4 mb-4">
+              <div className="flex space-x-4 mb-4" key={result.business_name}>
                 <img
                   className="w-40 h-40 rounded shrink-0"
                   src={result.primary_photo}
@@ -194,8 +195,13 @@ function Page() {
                     <div className="flex">
                       {Array.from({
                         length: wholeStars,
-                      }).map(() => {
-                        return <StarIcon className="h-4 w-4 text-orange-300" />;
+                      }).map((_, i) => {
+                        return (
+                          <StarIcon
+                            className="h-4 w-4 text-orange-300"
+                            key={i}
+                          />
+                        );
                       })}
                       {fraction > 0 && (
                         <StarIcon
@@ -215,7 +221,10 @@ function Page() {
                   <div className="flex space-x-2 mb-2">
                     {result.categories.map((category: string) => {
                       return (
-                        <span className="bg-black/5 px-2 rounded text-sm">
+                        <span
+                          className="bg-black/5 px-2 rounded text-sm"
+                          key={category}
+                        >
                           {category}
                         </span>
                       );
