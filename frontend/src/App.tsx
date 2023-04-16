@@ -4,8 +4,81 @@ import {
   RouterProvider,
   useParams,
 } from "react-router-dom";
-import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import { PaperAirplaneIcon, StarIcon } from "@heroicons/react/24/solid";
 import exampleOutput from "./example-output.json";
+
+type TimeRange = {
+  open: Date;
+  close: Date;
+};
+
+type RestaurantStatus = {
+  isOpen: boolean;
+  nextEvent: Date;
+};
+
+function stringifyDate(date: Date) {
+  const hours24 = date.getHours();
+  const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
+  const minutes = date.getMinutes();
+  const amPm = hours24 < 12 ? "AM" : "PM";
+
+  const hoursStr = hours12.toString();
+  const minutesStr = minutes.toString().padStart(2, "0");
+
+  return `${hoursStr}:${minutesStr} ${amPm}`;
+}
+
+function parseTime(timeStr: string): Date {
+  const now = new Date();
+  const [hours, minutes] = timeStr.split(/[:\s]/).filter(Boolean);
+  const amPm = timeStr.match(/AM|PM/i)?.[0] ?? "AM";
+  console.log("parsed", timeStr);
+
+  const hours24 =
+    amPm.toUpperCase() === "PM" ? parseInt(hours) + 12 : parseInt(hours);
+  const minutesInt = parseInt(minutes);
+
+  const result = new Date(now);
+  result.setHours(hours24, minutesInt, 0, 0);
+  return result;
+}
+
+function parseTimeRanges(timeRangesStr: string[]): TimeRange[] {
+  return timeRangesStr.map((rangeStr) => {
+    const [openStr, , closeStr] = rangeStr.split(/[-\s]/).filter(Boolean);
+    return {
+      open: parseTime(openStr),
+      close: parseTime(closeStr),
+    };
+  });
+}
+
+function restaurantStatus(
+  timeRangesStr: string[],
+  currentTime: Date
+): RestaurantStatus {
+  const timeRanges = parseTimeRanges(timeRangesStr);
+
+  for (const range of timeRanges) {
+    if (currentTime >= range.open && currentTime < range.close) {
+      return {
+        isOpen: true,
+        nextEvent: range.close,
+      };
+    }
+  }
+
+  const nextOpen = timeRanges
+    .map((range) => range.open)
+    .sort((a, b) => a.getTime() - b.getTime())
+    .find((openTime) => openTime > currentTime);
+
+  return {
+    isOpen: false,
+    nextEvent: nextOpen || timeRanges[0].open,
+  };
+}
 
 const CATEGORY_MAP = {
   restaurant: {
@@ -91,8 +164,21 @@ function Page() {
         {loading && <div className="text-slate-400">Loading...</div>}
         <div className="mt-4">
           {results.map((result: any) => {
+            const dayOfWeekIndex = (new Date().getDay() + 6) % 7;
+            const hoursToday =
+              result.operation_hours[dayOfWeekIndex].regularHours;
+            let status: RestaurantStatus;
+            if (hoursToday == null) {
+              status = {
+                isOpen: false,
+                nextEvent: new Date(),
+              };
+            } else {
+              status = restaurantStatus(hoursToday, new Date());
+            }
+
             return (
-              <div className="flex space-x-4">
+              <div className="flex space-x-4 mb-4">
                 <img
                   className="w-40 h-40 rounded shrink-0"
                   src={result.primary_photo}
@@ -101,18 +187,32 @@ function Page() {
                   <h2 className="font-semibold text-xl">
                     {result.business_name}
                   </h2>
-                  <div>{result.review_count}</div>
-                  <div className="flex space-x-2">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <div className="flex">
+                      {Array.from({ length: 5 }).map(() => {
+                        return <StarIcon className="h-4 w-4 text-orange-300" />;
+                      })}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {result.review_count}
+                    </div>
+                  </div>
+                  <div className="flex space-x-2 mb-2">
                     {result.categories.map((category: string) => {
                       return (
-                        <span className="bg-black/5 px-2 rounded">
+                        <span className="bg-black/5 px-2 rounded text-sm">
                           {category}
                         </span>
                       );
                     })}
                   </div>
-                  <div>{result.c1_name}</div>
-                  <div className="h-3 w-64 bg-black/5 rounded">
+                  <div className="mb-4 text-sm text-gray-500">
+                    {status.isOpen
+                      ? `Open until ${stringifyDate(status.nextEvent)}`
+                      : `Closed until ${stringifyDate(status.nextEvent)}`}
+                  </div>
+                  <div className="mb-1">{result.c1_name}</div>
+                  <div className="h-3 w-64 bg-black/5 rounded mb-2">
                     <div
                       className="h-3 bg-green-500 rounded"
                       style={{
@@ -120,9 +220,11 @@ function Page() {
                       }}
                     ></div>
                   </div>
-                  <div>{result.c1_evidence}</div>
-                  <div>{result.c2_name}</div>
-                  <div className="h-3 w-64 bg-gray-200 rounded">
+                  <div className="mb-4 text-sm text-gray-700">
+                    {result.c1_evidence}
+                  </div>
+                  <div className="mb-1">{result.c2_name}</div>
+                  <div className="h-3 w-64 bg-gray-200 rounded mb-2">
                     <div
                       className="h-3 bg-blue-500 rounded"
                       style={{
@@ -130,7 +232,9 @@ function Page() {
                       }}
                     ></div>
                   </div>
-                  <div>{result.c2_evidence}</div>
+                  <div className="mb-2 text-sm text-gray-700">
+                    {result.c2_evidence}
+                  </div>
                 </div>
               </div>
             );
