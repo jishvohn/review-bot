@@ -213,6 +213,8 @@ async def get_recommendations(prompt):
         final_responses.append(final_response)
 
         print(final_responses)
+        with open("frontend/src/example-output-3.json", "w") as f:
+            json.dump(final_responses, f)
 
     return quart.Response(json.dumps(final_responses))
 
@@ -252,6 +254,9 @@ def cache(prompt: str):
         if item in prompt:
             with open(f"data/{item}.json", "r") as f:
                 return json.load(f)
+
+def full_cache(prompt: str):
+    cache_items = ['dentist with friendly front office']
 
 
 if __name__ == "__main__":
