@@ -1,0 +1,22 @@
+openapi: 3.0.1
+info:
+  title: Yelp Recommender
+  description: A plugin that allows the user to find local recommendations for restaurants, bars, dentists, barbers, salons, and more.
+  version: "v1"
+servers:
+  - url: PLUGIN_HOSTNAME
+paths:
+  /recommendations/{prompt}:
+    get:
+      operationId: getRecommendations
+      summary: Get a list of recommendations that match the given prompt
+      parameters:
+        - in: path
+          name: prompt
+          schema:
+            type: string
+          required: true
+          description: A description of the service that the user is looking for.
+      responses:
+        "200":
+          description: OK
