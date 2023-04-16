@@ -1,2 +1,5 @@
 quart
 quart_cors
+apify_client
+langchain
+openai

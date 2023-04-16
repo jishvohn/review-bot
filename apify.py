@@ -4,22 +4,23 @@ import pdb
 import openai
 from langchain import PromptTemplate
 
-apify_client = ApifyClient(os.getenv('APIFY_API_KEY'))
+apify_client = ApifyClient(os.getenv("APIFY_API_KEY"))
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 USER_QUERY = "mediterranean food"
 
 # Start an actor and waits for it to finish
-actor_call = apify_client.actor('yin/yelp-scraper').call(
-    run_input = {
+actor_call = apify_client.actor("yin/yelp-scraper").call(
+    run_input={
         "searchTerms": [USER_QUERY],
         "locations": ["94105"],
         "searchLimit": 5,
-        "reviewLimit": 5
+        "reviewLimit": 5,
     }
 )
 # Fetch results from the actor's default dataset
-dataset_items = apify_client.dataset(actor_call['defaultDatasetId']).list_items().items
+dataset_items = apify_client.dataset(actor_call["defaultDatasetId"]).list_items().items
 
 template = """
 User query: {user_query}
@@ -86,18 +87,15 @@ for item in dataset_items:
     for review in item["reviews"]:
         reviews.append(review["text"])
 
-    prompt.format(user_query = USER_QUERY,
-                  n=n,
-                  r1=reviews[0],
-                  r2=reviews[1],
-                  r3=reviews[2],
-                  r4=reviews[3],
-                  r5=reviews[4]
+    prompt.format(
+        user_query=USER_QUERY,
+        n=n,
+        r1=reviews[0],
+        r2=reviews[1],
+        r3=reviews[2],
+        r4=reviews[3],
+        r5=reviews[4],
     )
-
-
-
-
 
 
 print(dataset_items)
