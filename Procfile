@@ -1,1 +1,1 @@
-web: gunicorn serve:app --worker-class quart.worker.GunicornWorker
+web: gunicorn serve:app -k uvicorn.workers.UvicornWorker
