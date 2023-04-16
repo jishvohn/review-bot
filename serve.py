@@ -11,11 +11,14 @@ from langchain import PromptTemplate
 
 # Note: Setting CORS to allow chat.openapi.com is only required when running a localhost plugin
 app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
-apify_client = ApifyClient(os.getenv('APIFY_API_KEY'))
+apify_client = ApifyClient(os.getenv("APIFY_API_KEY"))
 openai.api_key = os.getenv("OPENAI_API_KEY")
 print(os.getenv('APIFY_API_KEY'))
 print(openai.api_key)
 
+print("WHAT THE FUCK")
+print(os.getenv("APIFY_API_KEY"))
+print(os.getenv("OPENAI_API_KEY"))
 
 # Prompt Template
 template = """
@@ -75,22 +78,25 @@ Score of characteristic 2:
 Evidence for characteristic 2, i.e relevant text snippets from reviews separated by semicolon: 
 """
 
+
 @app.get("/recommendations/<string:prompt>")
 async def get_recommendations(prompt):
     # Do your shit
     user_query = prompt
     s = time.time()
-    actor_call = apify_client.actor('yin/yelp-scraper').call(
-        run_input = {
+    actor_call = apify_client.actor("yin/yelp-scraper").call(
+        run_input={
             "searchTerms": [user_query],
             "locations": ["94105"],
             "searchLimit": 5,
-            "reviewLimit": 5
+            "reviewLimit": 5,
         }
     )
     print(f"Time elapsed for apify call: {time.time() - s} seconds")
 
-    dataset_items = apify_client.dataset(actor_call['defaultDatasetId']).list_items().items
+    dataset_items = (
+        apify_client.dataset(actor_call["defaultDatasetId"]).list_items().items
+    )
 
     prompt_template = PromptTemplate(
         input_variables=["user_query", "n", "r1", "r2", "r3", "r4", "r5"],
@@ -104,19 +110,20 @@ async def get_recommendations(prompt):
         for review in item["reviews"]:
             reviews.append(review["text"])
 
-        prompt = prompt_template.format(user_query = user_query,
-                      n=n,
-                      r1=reviews[0],
-                      r2=reviews[1],
-                      r3=reviews[2],
-                      r4=reviews[3],
-                      r5=reviews[4]
+        prompt = prompt_template.format(
+            user_query=user_query,
+            n=n,
+            r1=reviews[0],
+            r2=reviews[1],
+            r3=reviews[2],
+            r4=reviews[3],
+            r5=reviews[4],
         )
         params = {
             "engine": "text-davinci-003",
             "prompt": prompt,
             "max_tokens": 500,
-            "temperature": 0.2
+            "temperature": 0.2,
         }
 
         # Send the request to the API and get back the response
@@ -129,7 +136,7 @@ async def get_recommendations(prompt):
         keys = ["business_name", "characteristic_1_name", "characteristic_1_score", "characteristic_1_evidence_relevant_text_snippets", "characteristic_2_name", "characteristic_2_score", "characteristic_2_evidence_relevant_text_snippets"]
         final_response = {}
         for j, raw_val in enumerate(a):
-            final_response[keys[j]] = ''.join(raw_val.split(':')[1:]).strip()
+            final_response[keys[j]] = "".join(raw_val.split(":")[1:]).strip()
         final_response["primary_photo"] = item["primaryPhoto"]
         final_response["review_count"] = item["reviewCount"]
         final_response["categories"] = item["categories"]
