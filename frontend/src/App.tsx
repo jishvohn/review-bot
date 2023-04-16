@@ -132,7 +132,7 @@ const CATEGORY_MAP = {
 
 function Page() {
   const { category } = useParams<{ category: string }>();
-  const [results, setResults] = useState(exampleOutput);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [prompt, setPrompt] = useState("");
