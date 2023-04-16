@@ -238,6 +238,7 @@ async def get_recommendations(prompt):
         final_response["categories"] = item["categories"]
         final_response["operation_hours"] = item["operationHours"]
         final_response["aggregated_rating"] = item["aggregatedRating"]
+        final_response["direct_url"] = item["directUrl"]
         final_responses.append(final_response)
 
         print(final_responses)
