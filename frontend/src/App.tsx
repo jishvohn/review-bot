@@ -5,7 +5,7 @@ import {
   useParams,
 } from "react-router-dom";
 import { PaperAirplaneIcon, StarIcon } from "@heroicons/react/24/solid";
-import exampleOutput from "./example-output.json";
+import exampleOutput from "./example-output-3.json";
 import classNames from "classnames";
 
 function stringifyDate(date: Date) {
@@ -132,7 +132,7 @@ const CATEGORY_MAP = {
 
 function Page() {
   const { category } = useParams<{ category: string }>();
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(exampleOutput);
   const [loading, setLoading] = useState(false);
 
   const [prompt, setPrompt] = useState("");
@@ -255,7 +255,7 @@ function Page() {
                 key={result.business_name}
               >
                 <img
-                  className="w-40 h-40 rounded shrink-0"
+                  className="w-40 h-40 object-contain rounded shrink-0"
                   src={result.primary_photo}
                 ></img>
                 <div className="flex flex-col">
@@ -330,7 +330,13 @@ function Page() {
                     ></div>
                   </div>
                   <div className="mb-4 text-sm opacity-70">
-                    {result.c1_evidence}
+                    {result.c1_evidence.map((ev: string) => {
+                      return (
+                        <div className="mb-2 border-l-2 border-black/20 pl-4">
+                          "{ev.trim()}"
+                        </div>
+                      );
+                    })}
                   </div>
                   <div className="mb-1">
                     <span className="opacity-50">{result.c2_name}:</span>{" "}
@@ -346,7 +352,13 @@ function Page() {
                     ></div>
                   </div>
                   <div className="mb-2 text-sm opacity-70">
-                    {result.c2_evidence}
+                    {result.c2_evidence.map((ev: string) => {
+                      return (
+                        <div className="mb-2 border-l-2 border-black/20 pl-4">
+                          "{ev.trim()}"
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
