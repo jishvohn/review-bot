@@ -161,7 +161,10 @@ function Page() {
       )}
     >
       <div className="max-w-4xl mx-auto mt-16 w-full">
-        <div className="text-lg mb-2 flex items-center">
+        <div
+          className="text-lg mb-2 flex items-center"
+          style={{ marginTop: -2 }} // the category tag pushes things 2px down; this undos that
+        >
           Find a
           <a
             className={classNames(
