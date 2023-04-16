@@ -9,7 +9,7 @@ paths:
   /recommendations/{prompt}:
     get:
       operationId: getRecommendations
-      summary: Get a list of recommendations that match the given prompt.
+      summary: Get a list of recommendations with review text snippets that match the given prompt.
       parameters:
         - in: path
           name: prompt
