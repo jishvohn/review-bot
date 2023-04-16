@@ -12,11 +12,15 @@ from langchain import PromptTemplate
 # Note: Setting CORS to allow chat.openapi.com is only required when running a localhost plugin
 app = quart_cors.cors(
     quart.Quart(__name__),
-    allow_origin=["https://chat.openai.com", "http://localhost:5178", "http://localhost:5173"],
+    allow_origin=[
+        "https://chat.openai.com",
+        "http://localhost:5178",
+        "http://localhost:5173",
+    ],
 )
 apify_client = ApifyClient(os.getenv("APIFY_API_KEY"))
 openai.api_key = os.getenv("OPENAI_API_KEY")
-print(os.getenv('APIFY_API_KEY'))
+print(os.getenv("APIFY_API_KEY"))
 print(openai.api_key)
 
 print("WHAT THE FUCK")
@@ -118,22 +122,22 @@ async def get_recommendations(prompt):
 
     prompt = ct.format(user_query=user_query)
     params = {
-            "engine": "text-davinci-003",
-            "prompt": prompt,
-            "max_tokens": 100,
-            "temperature": 0.1,
+        "engine": "text-davinci-003",
+        "prompt": prompt,
+        "max_tokens": 100,
+        "temperature": 0.1,
     }
 
     response = openai.Completion.create(**params)
     raw_answer = response.choices[0].text
     semi_answer = []
-    for a in raw_answer.split('\n'):
-        if a != '':
+    for a in raw_answer.split("\n"):
+        if a != "":
             semi_answer.append(a)
 
     print(semi_answer)
-    c1 = ''.join(semi_answer[0].split(':')[1:]).strip()
-    c2 = ''.join(semi_answer[1].split(':')[1:]).strip()
+    c1 = "".join(semi_answer[0].split(":")[1:]).strip()
+    c2 = "".join(semi_answer[1].split(":")[1:]).strip()
 
     s = time.time()
     print("Received prompt", prompt)
@@ -148,12 +152,23 @@ async def get_recommendations(prompt):
             }
         )
         print(f"Time elapsed for apify call: {time.time() - s} seconds")
-        data = (
-            apify_client.dataset(actor_call["defaultDatasetId"]).list_items().items
-        )
+        data = apify_client.dataset(actor_call["defaultDatasetId"]).list_items().items
 
     prompt_template = PromptTemplate(
-        input_variables=["user_query", "c1", "c2", "n", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"],
+        input_variables=[
+            "user_query",
+            "c1",
+            "c2",
+            "n",
+            "r1",
+            "r2",
+            "r3",
+            "r4",
+            "r5",
+            "r6",
+            "r7",
+            "r8",
+        ],
         template=template,
     )
 
@@ -161,7 +176,7 @@ async def get_recommendations(prompt):
 
     for i, item in enumerate(data):
         n = item["name"]
-        reviews = ['' for _ in range(10)]
+        reviews = ["" for _ in range(10)]
         for j, review in enumerate(item["reviews"]):
             reviews[j] = review["text"]
 
@@ -192,17 +207,25 @@ async def get_recommendations(prompt):
         print(f"Time elapsed for openai call: {time.time() - s} seconds")
         raw_answer = response.choices[0].text
         semi_answer = []
-        for a in raw_answer.split('\n'):
-            if a != '':
+        for a in raw_answer.split("\n"):
+            if a != "":
                 semi_answer.append(a)
         print(semi_answer)
-        keys = ["business_name", "c1_name", "c1_score", "c1_evidence", "c2_name", "c2_score", "c2_evidence"]
+        keys = [
+            "business_name",
+            "c1_name",
+            "c1_score",
+            "c1_evidence",
+            "c2_name",
+            "c2_score",
+            "c2_evidence",
+        ]
         final_response = {}
         for j, raw_val in enumerate(semi_answer):
             if j < len(keys):
-                almost_val = ''.join(raw_val.split(':')[1:]).strip()
+                almost_val = "".join(raw_val.split(":")[1:]).strip()
                 if "evidence" in keys[j]:
-                    final_response[keys[j]] = almost_val.split(';')
+                    final_response[keys[j]] = almost_val.split(";")
                 else:
                     final_response[keys[j]] = almost_val
         final_response["primary_photo"] = item["primaryPhoto"]
@@ -248,19 +271,18 @@ async def openapi_spec():
 def main():
     app.run(debug=True, host="0.0.0.0", port=5003)
 
+
 def cache(prompt: str):
-    cache_items = ['dentist', 'vietnamese', 'mediterranean']
+    cache_items = ["dentist", "vietnamese", "mediterranean"]
     for item in cache_items:
         if item in prompt:
             with open(f"data/{item}.json", "r") as f:
                 return json.load(f)
 
+
 def full_cache(prompt: str):
-    cache_items = ['dentist with friendly front office']
+    cache_items = ["dentist with friendly front office"]
 
 
 if __name__ == "__main__":
-    print("Wtf1")
     main()
-    print("wtf2")
-
