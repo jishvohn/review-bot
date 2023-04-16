@@ -109,6 +109,11 @@ Evidence for characteristic 2, i.e relevant text snippets from reviews separated
 @app.get("/recommendations/<string:prompt>")
 async def get_recommendations(prompt):
     # Do it
+    result = full_cache(prompt)
+    print("FULL CACHE", result is not None)
+    if result is not None:
+        return quart.Response(json.dumps(result))
+
     user_query = prompt
 
     ct = PromptTemplate(
@@ -213,7 +218,7 @@ async def get_recommendations(prompt):
         final_responses.append(final_response)
 
         print(final_responses)
-        with open("frontend/src/example-output-3.json", "w") as f:
+        with open(f"data/{user_query}.json", "w") as f:
             json.dump(final_responses, f)
 
     return quart.Response(json.dumps(final_responses))
@@ -255,8 +260,23 @@ def cache(prompt: str):
             with open(f"data/{item}.json", "r") as f:
                 return json.load(f)
 
+def all_strings_present(list_of_strings, target_string):
+    # Iterate over each string in the list
+    for s in list_of_strings:
+        # If the current string is not present in the target string, return False
+        if s not in target_string:
+            return False
+    # If all strings are present, return True
+    return True
+
 def full_cache(prompt: str):
-    cache_items = ['dentist with friendly front office']
+    cache_items = [['dentist', 'friendly front office'], ['bar', 'fruity drinks', 'fun vibes']]
+    for item in cache_items:
+        if all_strings_present(item, prompt):
+            fn = '_'.join(['_'.join(s.split(' ')) for s in item])
+            time.sleep(5)
+            with open(f"data/{fn}.json", "r") as f:
+                return json.load(f)
 
 
 if __name__ == "__main__":
