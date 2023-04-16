@@ -40,6 +40,8 @@ its reviews. For each characteristic, you will use the reviews to provide a deci
 for that characteristic as well as the most relevant snippets of text from the reviews 
 that provide evidence for your rating. 
 
+Assume that the current time is Sunday, 11:30 am. 
+
 Each review is in the following format:
 ---
 Review Text: 
