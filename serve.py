@@ -1,4 +1,5 @@
 import json
+import time
 import os
 import quart
 import quart_cors
@@ -74,6 +75,7 @@ Evidence for characteristic 2, i.e text snippets from reviews:
 async def get_recommendations(prompt):
     # Do your shit
     user_query = prompt
+    s = time.time()
     actor_call = apify_client.actor('yin/yelp-scraper').call(
         run_input = {
             "searchTerms": [user_query],
@@ -82,6 +84,7 @@ async def get_recommendations(prompt):
             "reviewLimit": 5
         }
     )
+    print(f"Time elapsed for apify call: {time.time() - s} seconds")
 
     dataset_items = apify_client.dataset(actor_call['defaultDatasetId']).list_items().items
 
@@ -105,7 +108,6 @@ async def get_recommendations(prompt):
                       r4=reviews[3],
                       r5=reviews[4]
         )
-
         params = {
             "engine": "text-davinci-003",
             "prompt": prompt,
@@ -114,7 +116,9 @@ async def get_recommendations(prompt):
         }
 
         # Send the request to the API and get back the response
+        s = time.time()
         response = openai.Completion.create(**params)
+        print(f"Time elapsed for openai call: {time.time() - s} seconds")
         final_responses.append(response.choices[0].text)
 
     return quart.Response(json.dumps(final_responses))
