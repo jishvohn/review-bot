@@ -11,7 +11,29 @@ app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.c
 @app.get("/recommendations/<string:prompt>")
 async def get_recommendations(prompt):
     # Do your shit
-    return quart.Response(response="Stuff goes here", status=200)
+    return quart.Response(
+        response="""Kothai Republic
+4.5 stars
+Hours: 5:30 PM - 9:30 PM
+Description: Korean and Thai flavors served in a uniquely San Francisco way
+Summary of reviews: Very good kimchi and soups.
+
+KAIYO Rooftop
+4.2 stars
+Hours: 4:00 PM - 11:00 PM
+Description: KAIYŌ Rooftop is a tropical oasis in the sky, an immersive Nikkei experience that transports guests
+the moment they walk through the elevator door.
+Summary of reviews: Great service, nice heating lamps. Lovely ambiance fit for a date.
+
+The Snug
+4.3 stars
+Hours: 12:00 PM - 10:00 PM
+Unique cocktails, local beer, small-producer wines, and modern Californian comfort food -- all
+served up in a warm and comfortable environment.
+Summary of reviews: Self-serve QR code ordering system which you order from and the food is brought directly to the table where you scanned your code. Outdoor dining space.
+""",
+        status=200,
+    )
 
 
 @app.get("/logo.png")
