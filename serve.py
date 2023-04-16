@@ -1,39 +1,123 @@
 import json
-
+import os
 import quart
 import quart_cors
+import openai
 from quart import request
+
+from apify_client import ApifyClient
+from langchain import PromptTemplate
 
 # Note: Setting CORS to allow chat.openapi.com is only required when running a localhost plugin
 app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
+apify_client = ApifyClient(os.getenv('APIFY_API_KEY'))
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
+
+# Prompt Template
+template = """
+User query: {user_query}
+
+I'm going to give you a set of reviews for a business. 
+Based on the user query, I want you to determine what industry the business belongs in. 
+
+If the user query above contains characteristics on which to rank or evaluate this type of businesses, then
+use those characteristics. (For example, for a restaurant, the user may prioritize 
+ambiance followed by deliciousness of the food which are two characteristics that you want to evaluate
+using the reviews). 
+
+If the user query does not contain characteristics, then use the default values below for each type of business:then use your best judgment to come up with 
+Restaurant/food businesses: Deliciousness & Service
+Medical businesses: Quality of care & Bedside manner
+Haircuts/Barbers/Salons: Customer satisfaction & quality of care
+
+If the default values above don't match the business from the user query, then use your best judgment
+to come up with two important characteristics by which this type of business should be evaluated. 
+
+The main way you will evaluate the business on the above characteristics is by examining 
+its reviews. For each characteristic, you will use the reviews to provide a decimal score out of 5 
+for that characteristic as well as the most relevant snippets of text from the reviews 
+that provide evidence for your rating. 
+
+Each review is in the following format:
+---
+Review Text: 
+
+Here are the reviews for the business {n}:
+
+---
+Review Text: {r1}
+
+---
+Review Text: {r2}
+
+---
+Review Text: {r3}
+
+---
+Review Text: {r4}
+
+---
+Review Text: {r5}
+
+Remember you must output the following format:
+Name of Business:
+Name of characteristic 1: 
+Score of characteristic 1: 
+Evidence for characteristic 1, i.e text snippets from reviews: 
+Name of characteristic 2:
+Score of characteristic 2: 
+Evidence for characteristic 2, i.e text snippets from reviews: 
+"""
 
 @app.get("/recommendations/<string:prompt>")
 async def get_recommendations(prompt):
     # Do your shit
-    return quart.Response(
-        response="""Kothai Republic
-4.5 stars
-Hours: 5:30 PM - 9:30 PM
-Description: Korean and Thai flavors served in a uniquely San Francisco way
-Summary of reviews: Very good kimchi and soups.
-
-KAIYO Rooftop
-4.2 stars
-Hours: 4:00 PM - 11:00 PM
-Description: KAIYŌ Rooftop is a tropical oasis in the sky, an immersive Nikkei experience that transports guests
-the moment they walk through the elevator door.
-Summary of reviews: Great service, nice heating lamps. Lovely ambiance fit for a date.
-
-The Snug
-4.3 stars
-Hours: 12:00 PM - 10:00 PM
-Unique cocktails, local beer, small-producer wines, and modern Californian comfort food -- all
-served up in a warm and comfortable environment.
-Summary of reviews: Self-serve QR code ordering system which you order from and the food is brought directly to the table where you scanned your code. Outdoor dining space.
-""",
-        status=200,
+    user_query = prompt
+    actor_call = apify_client.actor('yin/yelp-scraper').call(
+        run_input = {
+            "searchTerms": [user_query],
+            "locations": ["94105"],
+            "searchLimit": 5,
+            "reviewLimit": 5
+        }
     )
+
+    dataset_items = apify_client.dataset(actor_call['defaultDatasetId']).list_items().items
+
+    prompt_template = PromptTemplate(
+        input_variables=["user_query", "n", "r1", "r2", "r3", "r4", "r5"],
+        template=template,
+    )
+
+    final_responses = []
+    for i, item in enumerate(dataset_items):
+        n = item["name"]
+        reviews = []
+        for review in item["reviews"]:
+            reviews.append(review["text"])
+
+        prompt = prompt_template.format(user_query = user_query,
+                      n=n,
+                      r1=reviews[0],
+                      r2=reviews[1],
+                      r3=reviews[2],
+                      r4=reviews[3],
+                      r5=reviews[4]
+        )
+
+        params = {
+            "engine": "text-davinci-003",
+            "prompt": prompt,
+            "max_tokens": 500,
+            "temperature": 0.2
+        }
+
+        # Send the request to the API and get back the response
+        response = openai.Completion.create(**params)
+        final_responses.append(response.choices[0].text)
+
+    return quart.Response(json.dumps(final_responses))
 
 
 @app.get("/logo.png")
