@@ -10,7 +10,10 @@ from apify_client import ApifyClient
 from langchain import PromptTemplate
 
 # Note: Setting CORS to allow chat.openapi.com is only required when running a localhost plugin
-app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
+app = quart_cors.cors(
+    quart.Quart(__name__),
+    allow_origin=["https://chat.openai.com", "http://localhost:5178"],
+)
 apify_client = ApifyClient(os.getenv("APIFY_API_KEY"))
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -82,6 +85,7 @@ async def get_recommendations(prompt):
     # Do your shit
     user_query = prompt
     s = time.time()
+    print("Received prompt", prompt)
     actor_call = apify_client.actor("yin/yelp-scraper").call(
         run_input={
             "searchTerms": [user_query],
