@@ -116,7 +116,7 @@ function Page() {
     console.log("wtf");
     setLoading(true);
     const response = await fetch(
-      `http://localhost:5002/recommendations/${category} that ${prompt}`
+      `http://localhost:5003/recommendations/${category} that ${prompt}`
     );
     setLoading(false);
     const data = await response.json();
