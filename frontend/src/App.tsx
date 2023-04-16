@@ -130,6 +130,10 @@ const CATEGORY_MAP = {
   },
 };
 
+const host = window.location.href.includes("localhost")
+  ? "http://localhost:5003"
+  : "https://gpt-recommend.herokuapp.com";
+
 function Page() {
   const { category } = useParams<{ category: string }>();
   const [results, setResults] = useState([]);
@@ -141,7 +145,7 @@ function Page() {
     console.log("wtf");
     setLoading(true);
     const response = await fetch(
-      `http://localhost:5003/recommendations/${category} with ${prompt}!!`
+      `${host}/recommendations/${category} with ${prompt}!!`
     );
     setLoading(false);
     const data = await response.json();
