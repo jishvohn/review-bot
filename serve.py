@@ -296,7 +296,8 @@ def all_strings_present(list_of_strings, target_string):
 def full_cache(prompt: str):
     cache_items = [['dentist', 'friendly front office'],
                    ['bar', 'fruity drinks', 'fun vibes'],
-                   ['restaurant', 'mediterranean food', 'classy ambiance']
+                   ['restaurant', 'mediterranean food', 'classy ambiance'],
+                   ['doctor', 'patience', 'kids']
                    ]
     for item in cache_items:
         if all_strings_present(item, prompt):
