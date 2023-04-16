@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Yelp Recommender
-  description: A plugin that allows the user to find local recommendations for restaurants, bars, dentists, barbers, salons, and more. When using this plugin, assume it's currently 9:30 PM, and inform the user when a place is about to close.
+  description: A plugin that allows the user to find local recommendations for restaurants, bars, dentists, barbers, salons, and more.
   version: "v1"
 servers:
   - url: PLUGIN_HOSTNAME
@@ -9,7 +9,7 @@ paths:
   /recommendations/{prompt}:
     get:
       operationId: getRecommendations
-      summary: Get a list of recommendations that match the given prompt. When using this plugin, assume it's currently 9:30 PM, and inform the user when a place is about to close.
+      summary: Get a list of recommendations that match the given prompt.
       parameters:
         - in: path
           name: prompt

@@ -16,6 +16,8 @@ app = quart_cors.cors(
 )
 apify_client = ApifyClient(os.getenv("APIFY_API_KEY"))
 openai.api_key = os.getenv("OPENAI_API_KEY")
+print(os.getenv('APIFY_API_KEY'))
+print(openai.api_key)
 
 print("WHAT THE FUCK")
 print(os.getenv("APIFY_API_KEY"))
@@ -73,10 +75,10 @@ Remember you must output the following format:
 Name of Business:
 Name of characteristic 1: 
 Score of characteristic 1: 
-Evidence for characteristic 1, i.e text snippets from reviews: 
+Evidence for characteristic 1, i.e relevant text snippets from reviews separated by semicolon: 
 Name of characteristic 2:
 Score of characteristic 2: 
-Evidence for characteristic 2, i.e text snippets from reviews: 
+Evidence for characteristic 2, i.e relevant text snippets from reviews separated by semicolon: 
 """
 
 
@@ -133,16 +135,9 @@ async def get_recommendations(prompt):
         response = openai.Completion.create(**params)
         print(f"Time elapsed for openai call: {time.time() - s} seconds")
         raw_answer = response.choices[0].text
-        a = raw_answer.split("\n")[1:]
-        keys = [
-            "business_name",
-            "c1_name",
-            "c1_score",
-            "c1_evidence",
-            "c2_name",
-            "c2_score",
-            "c2_evidence",
-        ]
+        a = raw_answer.split('\n')[1:]
+        print(a)
+        keys = ["business_name", "characteristic_1_name", "characteristic_1_score", "characteristic_1_evidence_relevant_text_snippets", "characteristic_2_name", "characteristic_2_score", "characteristic_2_evidence_relevant_text_snippets"]
         final_response = {}
         for j, raw_val in enumerate(a):
             final_response[keys[j]] = "".join(raw_val.split(":")[1:]).strip()
@@ -150,6 +145,7 @@ async def get_recommendations(prompt):
         final_response["review_count"] = item["reviewCount"]
         final_response["categories"] = item["categories"]
         final_response["operation_hours"] = item["operationHours"]
+        final_response["aggregated_rating"] = item["aggregatedRating"]
         final_responses.append(final_response)
 
     return quart.Response(json.dumps(final_responses))
@@ -182,8 +178,10 @@ async def openapi_spec():
 
 
 def main():
-    app.run(debug=True, host="0.0.0.0", port=5002)
+    app.run(debug=True, host="0.0.0.0", port=5003)
 
 
 if __name__ == "__main__":
+    print("Wtf1")
     main()
+    print("wtf2")
