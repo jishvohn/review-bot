@@ -177,6 +177,9 @@ function Page() {
               status = restaurantStatus(hoursToday, new Date());
             }
 
+            const wholeStars = Math.floor(result.aggregated_rating);
+            const fraction = result.aggregated_rating % 1;
+
             return (
               <div className="flex space-x-4 mb-4">
                 <img
@@ -189,9 +192,21 @@ function Page() {
                   </h2>
                   <div className="flex items-center space-x-2 mb-2">
                     <div className="flex">
-                      {Array.from({ length: 5 }).map(() => {
+                      {Array.from({
+                        length: wholeStars,
+                      }).map(() => {
                         return <StarIcon className="h-4 w-4 text-orange-300" />;
                       })}
+                      {fraction > 0 && (
+                        <StarIcon
+                          className="h-4 w-4 text-orange-300"
+                          style={{
+                            WebkitMaskImage: `linear-gradient(90deg, black ${
+                              fraction * 100
+                            }%, transparent ${fraction * 100}%)`,
+                          }}
+                        />
+                      )}
                     </div>
                     <div className="text-sm text-gray-500">
                       {result.review_count}
