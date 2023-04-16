@@ -16,7 +16,7 @@ function stringifyDate(date) {
   const hoursStr = hours12.toString();
   const minutesStr = minutes.toString().padStart(2, "0");
 
-  return `${date.getDay()} ${hoursStr}:${minutesStr} ${amPm}`;
+  return `${hoursStr}:${minutesStr} ${amPm}`;
 }
 
 type TimeRange = {
