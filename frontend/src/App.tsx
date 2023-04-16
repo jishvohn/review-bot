@@ -6,8 +6,9 @@ import {
 } from "react-router-dom";
 import { PaperAirplaneIcon, StarIcon } from "@heroicons/react/24/solid";
 import exampleOutput from "./example-output.json";
+import classNames from "classnames";
 
-function stringifyDate(date) {
+function stringifyDate(date: Date) {
   const hours24 = date.getHours();
   const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
   const minutes = date.getMinutes();
@@ -84,24 +85,49 @@ const CATEGORY_MAP = {
   restaurant: {
     name: "Restaurant",
     placeholder: "is Japanese, has fresh sushi, and has outdoor seating",
+    bgColor: "bg-orange-50",
+    tagColor: "bg-orange-200",
+    tagColorHover: "hover:bg-orange-300",
+    primaryColor: "text-orange-300",
+    primaryColorHover: "hover:text-orange-400",
   },
   dentist: {
     name: "Dentist",
     placeholder:
       "is in-network, has good reviews, and is accepting new patients",
+    bgColor: "bg-blue-50",
+    tagColor: "bg-blue-200",
+    tagColorHover: "hover:bg-blue-300",
+    primaryColor: "text-blue-300",
+    primaryColorHover: "hover:text-blue-400",
   },
   bar: {
     name: "Bar",
     placeholder: "has outdoor seating, has good reviews, and is open late",
+    bgColor: "bg-yellow-50",
+    tagColor: "bg-yellow-200",
+    tagColorHover: "hover:bg-yellow-300",
+    primaryColor: "text-yellow-300",
+    primaryColorHover: "hover:text-yellow-400",
   },
   salon: {
     name: "Beauty Salon",
     placeholder: "can dye hair, has good reviews, and is accepting new clients",
+    bgColor: "bg-red-50",
+    tagColor: "bg-red-200",
+    tagColorHover: "hover:bg-red-300",
+    primaryColor: "text-red-300",
+    primaryColorHover: "hover:text-red-400",
   },
   doctor: {
     name: "Doctor",
     placeholder:
       "is in-network, has good reviews, and is accepting new patients",
+    bgColor: "bg-green-50",
+    tagColor: "bg-green-200",
+    tagColorHover: "hover:bg-green-300",
+    primaryColor: "text-green-300",
+    primaryColorHover: "hover:text-green-400",
   },
 };
 
@@ -124,16 +150,28 @@ function Page() {
     setResults(data);
   }
 
+  const categoryProperties =
+    CATEGORY_MAP[category as keyof typeof CATEGORY_MAP];
+
   return (
-    <div className="bg-orange-50 min-h-screen flex flex-col p-4">
+    <div
+      className={classNames(
+        "min-h-screen flex flex-col p-4",
+        categoryProperties.bgColor
+      )}
+    >
       <div className="max-w-4xl mx-auto mt-16 w-full">
         <div className="text-lg mb-2 flex items-center">
           Find a
           <a
-            className="rounded bg-orange-200 px-3 py-0.5 hover:bg-orange-300 mx-2"
+            className={classNames(
+              "rounded px-3 py-0.5 mx-2",
+              categoryProperties.tagColor,
+              categoryProperties.tagColorHover
+            )}
             href="/"
           >
-            {CATEGORY_MAP[category as keyof typeof CATEGORY_MAP].name}
+            {categoryProperties.name}
           </a>
           with...
         </div>
@@ -145,9 +183,7 @@ function Page() {
             onChange={(e) => {
               setPrompt(e.target.value);
             }}
-            placeholder={
-              CATEGORY_MAP[category as keyof typeof CATEGORY_MAP].placeholder
-            }
+            placeholder={categoryProperties.placeholder}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 getRecommendations();
@@ -155,7 +191,11 @@ function Page() {
             }}
           />
           <PaperAirplaneIcon
-            className="w-5 h-5 text-orange-300 hover:text-orange-400 cursor-pointer"
+            className={classNames(
+              "w-5 h-5 cursor-pointer",
+              categoryProperties.primaryColor,
+              categoryProperties.primaryColorHover
+            )}
             onClick={() => {
               getRecommendations();
             }}
@@ -189,14 +229,20 @@ function Page() {
                       }).map((_, i) => {
                         return (
                           <StarIcon
-                            className="h-4 w-4 text-orange-300"
+                            className={classNames(
+                              "h-4 w-4",
+                              categoryProperties.primaryColor
+                            )}
                             key={i}
                           />
                         );
                       })}
                       {fraction > 0 && (
                         <StarIcon
-                          className="h-4 w-4 text-orange-300"
+                          className={classNames(
+                            "h-4 w-4",
+                            categoryProperties.primaryColor
+                          )}
                           style={{
                             WebkitMaskImage: `linear-gradient(90deg, black ${
                               fraction * 100
