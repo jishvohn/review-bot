@@ -14,6 +14,7 @@ app = quart_cors.cors(
     quart.Quart(__name__),
     allow_origin=[
         "https://chat.openai.com",
+        "https://gpt-recommend.vercel.app",
         "http://localhost:5178",
         "http://localhost:5173",
     ],
@@ -284,6 +285,7 @@ def cache(prompt: str):
             with open(f"data/{item}.json", "r") as f:
                 return json.load(f)
 
+
 def all_strings_present(list_of_strings, target_string):
     # Iterate over each string in the list
     for s in list_of_strings:
@@ -293,15 +295,17 @@ def all_strings_present(list_of_strings, target_string):
     # If all strings are present, return True
     return True
 
+
 def full_cache(prompt: str):
-    cache_items = [['dentist', 'friendly front office'],
-                   ['bar', 'fruity drinks', 'fun vibes'],
-                   ['restaurant', 'mediterranean food', 'classy ambiance'],
-                   ['doctor', 'patience', 'kids']
-                   ]
+    cache_items = [
+        ["dentist", "friendly front office"],
+        ["bar", "fruity drinks", "fun vibes"],
+        ["restaurant", "mediterranean food", "classy ambiance"],
+        ["doctor", "patience", "kids"],
+    ]
     for item in cache_items:
         if all_strings_present(item, prompt):
-            fn = '_'.join(['_'.join(s.split(' ')) for s in item])
+            fn = "_".join(["_".join(s.split(" ")) for s in item])
             time.sleep(5)
             with open(f"data/{fn}.json", "r") as f:
                 return json.load(f)

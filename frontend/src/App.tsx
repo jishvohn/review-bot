@@ -138,19 +138,25 @@ function Page() {
   const { category } = useParams<{ category: string }>();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [prompt, setPrompt] = useState("");
 
   async function getRecommendations() {
     console.log("wtf");
     setLoading(true);
-    const response = await fetch(
-      `${host}/recommendations/${category} with ${prompt}!!`
-    );
-    setLoading(false);
-    const data = await response.json();
-    console.log(data);
-    setResults(data);
+    try {
+      const response = await fetch(
+        `${host}/recommendations/${category} with ${prompt}!!`
+      );
+      setLoading(false);
+      const data = await response.json();
+      console.log(data);
+      setResults(data);
+    } catch (e) {
+      setLoading(false);
+      setError(e + "");
+    }
   }
 
   const categoryProperties =
@@ -207,6 +213,12 @@ function Page() {
             }}
           />
         </div>
+        {error && (
+          <div className="text-red-500 mb-8">
+            <div className="font-semibold">Error</div>
+            <div>{error}</div>
+          </div>
+        )}
         {loading && (
           <div className="flex flex-col space-y-8 opacity-20">
             {Array.from({ length: 3 }).map(() => (
