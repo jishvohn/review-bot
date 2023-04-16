@@ -36,6 +36,8 @@ its reviews. For each characteristic, you will use the reviews to provide a deci
 for that characteristic as well as the most relevant snippets of text from the reviews 
 that provide evidence for your rating. 
 
+Assume that the current time is Sunday, 11:30 am. 
+
 Each review is in the following format:
 ---
 Review Text: 
@@ -106,7 +108,18 @@ for item in dataset_items:
 
     # Send the request to the API and get back the response
     response = openai.Completion.create(**params)
-    print(response.choices[0].text)
-    print(response)
+    raw_answer = response.choices[0].text
+    a = raw_answer.split('\n')[1:]
+    keys = ["business_name", "c1_name", "c1_score", "c1_evidence", "c2_name", "c2_score", "c2_evidence"]
+    final_response = {}
+    for j, raw_val in enumerate(a):
+        final_response[keys[j]] = ''.join(raw_val.split(':')[1:]).strip()
+
+    final_response["primary_photo"] = item["primaryPhoto"]
+    final_response["review_count"] = item["reviewCount"]
+    final_response["categories"] = item["categories"]
+    final_response["operation_hours"] = item["operationHours"]
+    print(final_response)
     pdb.set_trace()
+    print(raw_answer)
     print(5)

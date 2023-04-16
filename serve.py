@@ -1,4 +1,5 @@
 import json
+import time
 import os
 import quart
 import quart_cors
@@ -42,6 +43,8 @@ its reviews. For each characteristic, you will use the reviews to provide a deci
 for that characteristic as well as the most relevant snippets of text from the reviews 
 that provide evidence for your rating. 
 
+Assume that the current time is Sunday, 11:30 am. 
+
 Each review is in the following format:
 ---
 Review Text: 
@@ -78,6 +81,7 @@ Evidence for characteristic 2, i.e text snippets from reviews:
 async def get_recommendations(prompt):
     # Do your shit
     user_query = prompt
+    s = time.time()
     actor_call = apify_client.actor("yin/yelp-scraper").call(
         run_input={
             "searchTerms": [user_query],
@@ -86,6 +90,7 @@ async def get_recommendations(prompt):
             "reviewLimit": 5,
         }
     )
+    print(f"Time elapsed for apify call: {time.time() - s} seconds")
 
     dataset_items = (
         apify_client.dataset(actor_call["defaultDatasetId"]).list_items().items
@@ -112,7 +117,6 @@ async def get_recommendations(prompt):
             r4=reviews[3],
             r5=reviews[4],
         )
-
         params = {
             "engine": "text-davinci-003",
             "prompt": prompt,
@@ -121,8 +125,28 @@ async def get_recommendations(prompt):
         }
 
         # Send the request to the API and get back the response
+        s = time.time()
         response = openai.Completion.create(**params)
-        final_responses.append(response.choices[0].text)
+        print(f"Time elapsed for openai call: {time.time() - s} seconds")
+        raw_answer = response.choices[0].text
+        a = raw_answer.split("\n")[1:]
+        keys = [
+            "business_name",
+            "c1_name",
+            "c1_score",
+            "c1_evidence",
+            "c2_name",
+            "c2_score",
+            "c2_evidence",
+        ]
+        final_response = {}
+        for j, raw_val in enumerate(a):
+            final_response[keys[j]] = "".join(raw_val.split(":")[1:]).strip()
+        final_response["primary_photo"] = item["primaryPhoto"]
+        final_response["review_count"] = item["reviewCount"]
+        final_response["categories"] = item["categories"]
+        final_response["operation_hours"] = item["operationHours"]
+        final_responses.append(final_response)
 
     return quart.Response(json.dumps(final_responses))
 
