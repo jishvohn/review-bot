@@ -116,7 +116,7 @@ function Page() {
     console.log("wtf");
     setLoading(true);
     const response = await fetch(
-      `http://localhost:5003/recommendations/${category} that ${prompt}`
+      `http://localhost:5003/recommendations/${category} with ${prompt}!!`
     );
     setLoading(false);
     const data = await response.json();
@@ -135,7 +135,7 @@ function Page() {
           >
             {CATEGORY_MAP[category as keyof typeof CATEGORY_MAP].name}
           </a>
-          that...
+          with...
         </div>
         <div className="flex items-center mb-2">
           <input
