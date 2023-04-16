@@ -137,10 +137,10 @@ function Page() {
           </a>
           that...
         </div>
-        <div className="flex items-center mb-2">
+        <div className="flex items-center mb-16 space-x-4">
           <input
             autoFocus
-            className="bg-transparent outline-none w-[480px] text-lg"
+            className="bg-transparent outline-none w-[460px] text-lg placeholder:opacity-25 placeholder:text-black border-b border-black/20 focus:border-black"
             value={prompt}
             onChange={(e) => {
               setPrompt(e.target.value);
@@ -205,7 +205,7 @@ function Page() {
                         />
                       )}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm opacity-50">
                       {result.review_count}
                     </div>
                   </div>
@@ -213,7 +213,7 @@ function Page() {
                     {result.categories.map((category: string) => {
                       return (
                         <span
-                          className="bg-black/5 px-2 rounded text-sm"
+                          className="bg-black/5 px-2 rounded text-sm text-black/70"
                           key={category}
                         >
                           {category}
@@ -221,7 +221,7 @@ function Page() {
                       );
                     })}
                   </div>
-                  <div className="mb-4 text-sm text-gray-500">
+                  <div className="mb-4 text-sm opacity-70">
                     {restaurantStatus.isOpen
                       ? `Open until ${stringifyDate(
                           restaurantStatus.nextChange
@@ -230,7 +230,11 @@ function Page() {
                           restaurantStatus.nextChange
                         )}`}
                   </div>
-                  <div className="mb-1">{result.c1_name}</div>
+                  <div className="mb-1">
+                    <span className="opacity-50">{result.c1_name}:</span>{" "}
+                    <strong className="font-semibold">{result.c1_score}</strong>
+                    <span className="opacity-50">/5</span>
+                  </div>
                   <div className="h-3 w-64 bg-black/5 rounded mb-2">
                     <div
                       className="h-3 bg-green-500 rounded"
@@ -239,10 +243,14 @@ function Page() {
                       }}
                     ></div>
                   </div>
-                  <div className="mb-4 text-sm text-gray-700">
+                  <div className="mb-4 text-sm opacity-70">
                     {result.c1_evidence}
                   </div>
-                  <div className="mb-1">{result.c2_name}</div>
+                  <div className="mb-1">
+                    <span className="opacity-50">{result.c2_name}:</span>{" "}
+                    <strong className="font-semibold">{result.c2_score}</strong>
+                    <span className="opacity-50">/5</span>
+                  </div>
                   <div className="h-3 w-64 bg-gray-200 rounded mb-2">
                     <div
                       className="h-3 bg-blue-500 rounded"
@@ -251,7 +259,7 @@ function Page() {
                       }}
                     ></div>
                   </div>
-                  <div className="mb-2 text-sm text-gray-700">
+                  <div className="mb-2 text-sm opacity-70">
                     {result.c2_evidence}
                   </div>
                 </div>
