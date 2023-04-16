@@ -93,8 +93,7 @@ const CATEGORY_MAP = {
   },
   dentist: {
     name: "Dentist",
-    placeholder:
-      "is in-network, has good reviews, and is accepting new patients",
+    placeholder: "is knowledgable, honest, and genuinely caring",
     bgColor: "bg-blue-50",
     tagColor: "bg-blue-200",
     tagColorHover: "hover:bg-blue-300",
@@ -112,7 +111,7 @@ const CATEGORY_MAP = {
   },
   salon: {
     name: "Beauty Salon",
-    placeholder: "can dye hair, has good reviews, and is accepting new clients",
+    placeholder: "is affable and can dye hair",
     bgColor: "bg-red-50",
     tagColor: "bg-red-200",
     tagColorHover: "hover:bg-red-300",
@@ -122,7 +121,7 @@ const CATEGORY_MAP = {
   doctor: {
     name: "Doctor",
     placeholder:
-      "is in-network, has good reviews, and is accepting new patients",
+      "is brilliant, has good bedside manner, and is a good listener",
     bgColor: "bg-green-50",
     tagColor: "bg-green-200",
     tagColorHover: "hover:bg-green-300",
