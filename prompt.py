@@ -112,6 +112,11 @@ for item in dataset_items:
     final_response = {}
     for j, raw_val in enumerate(a):
         final_response[keys[j]] = ''.join(raw_val.split(':')[1:]).strip()
+
+    final_response["primary_photo"] = item["primaryPhoto"]
+    final_response["review_count"] = item["reviewCount"]
+    final_response["categories"] = item["categories"]
+    final_response["operation_hours"] = item["operationHours"]
     print(final_response)
     pdb.set_trace()
     print(raw_answer)

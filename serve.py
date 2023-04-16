@@ -125,6 +125,10 @@ async def get_recommendations(prompt):
         final_response = {}
         for j, raw_val in enumerate(a):
             final_response[keys[j]] = ''.join(raw_val.split(':')[1:]).strip()
+        final_response["primary_photo"] = item["primaryPhoto"]
+        final_response["review_count"] = item["reviewCount"]
+        final_response["categories"] = item["categories"]
+        final_response["operation_hours"] = item["operationHours"]
         final_responses.append(final_response)
 
     return quart.Response(json.dumps(final_responses))
